@@ -1,4 +1,9 @@
 class MembersController < ApplicationController
+  # include the oauth_system mixin
+  include OauthSystem
+  # specify oauth to be on all user-specific actions
+  before_filter :oauth_login_required, :except => [ :callback, :signout, :index ]
+
   # GET /members
   # GET /members.xml
   def index
