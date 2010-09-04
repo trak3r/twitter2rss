@@ -6,10 +6,6 @@ class MembersController < ApplicationController
   before_filter :init_member, :except => [ :callback, :signout, :index ]
   before_filter :access_check, :except => [ :callback, :signout, :index ]
 
-  def timeline
-    render :text => 'Your timeline'
-  end
-
   # controller method to handle twitter callback (expected after login_by_oauth invoked)
   def callback
       self.twitagent.exchange_request_for_access_token( session[:request_token], session[:request_token_secret], params[:oauth_verifier] )
