@@ -2,21 +2,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title><%=h "Tweets for #{current_user.screen_name}" -%></title>
-    <description><%=h "Tweets for #{current_user.screen_name}" -%></description>
-    <% for tweet in @tweets %>
+    <title><%= "Tweets for #{current_user.screen_name}" %></title>
+    <description><%= "Tweets for #{current_user.screen_name}" %></description>
+    <% @tweets.each do |tweet| %>
     <item>
-      <title><%=h "#{screen_name(tweet)}#{suffix(tweet)}" -%></title>
+      <title><%= "#{screen_name(tweet)}#{suffix(tweet)}" %></title>
       <% if direct_message?(tweet) %>
-      <link><%= 'http://twitter.com/#inbox' -%></link>
+      <link><%= 'http://twitter.com/#inbox' %></link>
       <% else %>
-      <link><%= "http://twitter.com/#{screen_name(tweet)}/status/#{tweet.id}" -%></link>
+      <link><%= "http://twitter.com/#{screen_name(tweet)}/status/#{tweet.id}" %></link>
       <% end %>
-      <guid><%= "twitter2rss_#{tweet.id}" -%></guid>
+      <guid><%= "twitter2rss_#{tweet.id}" %></guid>
       <description>
-        <![CDATA[<%= "#{avatar(tweet)}#{formatted(tweet.text)}" -%>]]>
+        <![CDATA[<%= "#{avatar(tweet)}#{formatted(tweet.text)}" %>]]>
       </description>
-      <pubDate><%= pub_date(tweet) -%></pubDate>
+      <pubDate><%= pub_date(tweet) %></pubDate>
     </item>
     <% end %>
   </channel>
