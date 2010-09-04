@@ -1,11 +1,9 @@
-<%
-begin
-%>
+<% begin %>
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title><%=h "Tweets for #{@member.screen_name}" -%></title>
-    <description><%=h "Tweets for #{@member.screen_name}" -%></description>
+    <title><%=h "Tweets for #{current_user.screen_name}" -%></title>
+    <description><%=h "Tweets for #{current_user.screen_name}" -%></description>
     <% for tweet in @tweets %>
     <item>
       <title><%=h "#{screen_name(tweet)}#{suffix(tweet)}" -%></title>
@@ -18,19 +16,12 @@ begin
       <description>
         <![CDATA[<%= "#{avatar(tweet)}#{formatted(tweet.text)}" -%>]]>
       </description>
-      <pubDate><%= DateTime.parse(tweet.created_at).strftime("%a, %d %b %Y %H:%M:%S EST") -%></pubDate>
+      <pubDate><%= pub_date(tweet) -%></pubDate>
     </item>
     <% end %>
   </channel>
 </rss>
-<%
-rescue Exception => e
-%>
-
+<% rescue Exception => e %>
 <%= e.message %>
 <%= e.backtrace.join("\n") %>
-
-<%
-end
-%>
-
+<% end %>
