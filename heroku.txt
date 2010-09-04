@@ -1,0 +1,5 @@
+# get your keys from
+# http://twitter.com/oauth_clients
+# then run this command:
+heroku config:add TWOAUTH_KEY=... TWOAUTH_SECRET=... TWOAUTH_CALLBACK=http://your_app_name.heroku.com/members/callback --app your_app_name
+
