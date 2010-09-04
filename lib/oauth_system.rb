@@ -89,7 +89,7 @@ protected
   # Twitter REST API Method: statuses mentions
   def mentions( since_id = nil, max_id = nil , count = nil, page = nil )
     self.twitagent.mentions( since_id, max_id, count, page )
-#  rescue => err
+ rescue => err
     RAILS_DEFAULT_LOGGER.error "Failed to get mentions via OAuth for #{current_user.inspect}"
     flash[:error] = "Twitter API failure (getting mentions)"
     return
