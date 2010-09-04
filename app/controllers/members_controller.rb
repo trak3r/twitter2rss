@@ -39,11 +39,11 @@ class MembersController < ApplicationController
     # Redirect to the show page
     redirect_to member_path(@member)
 
-  # rescue
-  #   # The user might have rejected this application. Or there was some other error during the request.
-  #   RAILS_DEFAULT_LOGGER.error "Failed to get user info via OAuth"
-  #   flash[:error] = "Twitter API failure (account login)"
-  #   redirect_to root_url
+  rescue
+    # The user might have rejected this application. Or there was some other error during the request.
+    RAILS_DEFAULT_LOGGER.error "Failed to get user info via OAuth"
+    flash[:error] = "Twitter API failure (account login)"
+    redirect_to root_url
   end
 
   # GET /members
