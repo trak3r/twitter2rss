@@ -1,12 +1,11 @@
 Twitter2rss::Application.routes.draw do
-  resources :members
-
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
+  match 'signout' => 'members#signout'
 
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
@@ -14,6 +13,11 @@ Twitter2rss::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
+  resources :members do
+    collection do
+      get 'callback'
+    end
+  end
 
   # Sample resource route with options:
   #   resources :products do
@@ -51,6 +55,7 @@ Twitter2rss::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => "welcome#index"
+  root :to => 'members#index'
 
   # See how all your routes lay out with "rake routes"
 
