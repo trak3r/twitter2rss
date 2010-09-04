@@ -87,7 +87,7 @@ module OauthSystem
   # Twitter REST API Method: statuses mentions
   def mentions( since_id = nil, max_id = nil , count = nil, page = nil )
     self.twitagent.mentions( since_id, max_id, count, page )
- rescue => err
+  rescue => err
     RAILS_DEFAULT_LOGGER.error "Failed to get mentions via OAuth for #{current_user.inspect}"
     flash[:error] = "Twitter API failure (getting mentions)"
     return
@@ -99,6 +99,14 @@ module OauthSystem
   rescue => err
     RAILS_DEFAULT_LOGGER.error "Failed to get direct_messages via OAuth for #{current_user.inspect}"
     flash[:error] = "Twitter API failure (getting direct_messages)"
+    return
+  end
+
+  def friends_timeline( since_id = nil, max_id = nil , count = nil, page = nil )
+    self.twitagent.friends_timeline( since_id, max_id, count, page )
+  rescue => err
+    RAILS_DEFAULT_LOGGER.error "Failed to get friends_timeline via OAuth for #{current_user.inspect}"
+    flash[:error] = "Twitter API failure (getting friends_timeline)"
     return
   end
 end

@@ -122,4 +122,22 @@ class TwitterOauth
     puts "Exception in mentions: #{err}"
     raise err
   end
+
+  def friends_timeline( since_id = nil, max_id = nil , count = nil, page = nil )
+    params = (
+      { :since_id => since_id, :max_id => max_id, :count => count, :page => page }.collect { |n| "#{n[0]}=#{n[1]}" if n[1] }
+    ).compact.join('&')
+    response = access_token.get('/statuses/friends_timeline.json' + ( params.empty? ? '' : '?' + params ) )
+    case response
+    when Net::HTTPSuccess
+      messages=JSON.parse(response.body)
+      raise TwitterOauth::UnexpectedResponse unless messages.is_a? Array
+      messages
+    else
+      raise TwitterOauth::APIError
+    end
+  rescue => err
+    puts "Exception in friends_timeline: #{err}"
+    raise err
+  end
 end
