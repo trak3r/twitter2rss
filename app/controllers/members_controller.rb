@@ -8,39 +8,39 @@ class MembersController < ApplicationController
 
   # controller method to handle twitter callback (expected after login_by_oauth invoked)
   def callback
-      self.twitagent.exchange_request_for_access_token( session[:request_token], session[:request_token_secret], params[:oauth_verifier] )
-      
-      user_info = self.twitagent.verify_credentials
-      
-      raise OauthSystem::RequestError unless user_info['id'] && user_info['screen_name'] && user_info['profile_image_url']
-      
-      # We have an authorized user, save the information to the database.
-      @member = Member.find_by_screen_name(user_info['screen_name'])
-      if @member
-          @member.token = self.twitagent.access_token.token
-          @member.secret = self.twitagent.access_token.secret
-          @member.profile_image_url = user_info['profile_image_url']
-      else
-          @member = Member.new({ 
-              :twitter_id => user_info['id'],
-              :screen_name => user_info['screen_name'],
-              :token => self.twitagent.access_token.token,
-              :secret => self.twitagent.access_token.secret,
-              :profile_image_url => user_info['profile_image_url'] })
-      end
-      if @member.save!
-          self.current_user = @member    
-      else
-          raise OauthSystem::RequestError
-      end
-      # Redirect to the show page
-      redirect_to member_path(@member)
-      
+    self.twitagent.exchange_request_for_access_token( session[:request_token], session[:request_token_secret], params[:oauth_verifier] )
+
+    user_info = self.twitagent.verify_credentials
+
+    raise OauthSystem::RequestError unless user_info['id'] && user_info['screen_name'] && user_info['profile_image_url']
+
+    # We have an authorized user, save the information to the database.
+    @member = Member.find_by_screen_name(user_info['screen_name'])
+    if @member
+      @member.token = self.twitagent.access_token.token
+      @member.secret = self.twitagent.access_token.secret
+      @member.profile_image_url = user_info['profile_image_url']
+    else
+      @member = Member.new({ 
+        :twitter_id => user_info['id'],
+        :screen_name => user_info['screen_name'],
+        :token => self.twitagent.access_token.token,
+        :secret => self.twitagent.access_token.secret,
+        :profile_image_url => user_info['profile_image_url'] })
+    end
+    if @member.save!
+      self.current_user = @member  
+    else
+      raise OauthSystem::RequestError
+    end
+    # Redirect to the show page
+    redirect_to member_path(@member)
+
   rescue
-      # The user might have rejected this application. Or there was some other error during the request.
-      RAILS_DEFAULT_LOGGER.error "Failed to get user info via OAuth"
-      flash[:error] = "Twitter API failure (account login)"
-      redirect_to root_url
+    # The user might have rejected this application. Or there was some other error during the request.
+    RAILS_DEFAULT_LOGGER.error "Failed to get user info via OAuth"
+    flash[:error] = "Twitter API failure (account login)"
+    redirect_to root_url
   end
   # GET /members
   # GET /members.xml
