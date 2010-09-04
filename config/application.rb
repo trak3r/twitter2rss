@@ -41,3 +41,9 @@ module Twitter2rss
     config.filter_parameters += [:password]
   end
 end
+
+TWOAUTH_KEY = ENV['TWOAUTH_KEY']
+TWOAUTH_SECRET = ENV['TWOAUTH_SECRET']
+TWOAUTH_SITE = 'http://twitter.com'
+TWOAUTH_CALLBACK = ENV['TWOAUTH_CALLBACK']
+
