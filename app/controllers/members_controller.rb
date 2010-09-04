@@ -45,6 +45,11 @@ class MembersController < ApplicationController
   # GET /members
   # GET /members.xml
   def index
+    if current_user
+      @path = member_path(current_user)
+    else
+      @path = new_member_path
+    end
   end
 
   def new
@@ -64,8 +69,6 @@ class MembersController < ApplicationController
   
   protected
 
-  # controller helpers
-  
   def init_member
     begin
       screen_name = params[:id] unless params[:id].nil?
@@ -79,13 +82,10 @@ class MembersController < ApplicationController
     end
   end
   
-  
   def access_check
     return if current_user.id == @member.id
     flash[:error] = 'Sorry, permissions prevent you from viewing other user details.'
     redirect_to member_path(current_user) 
     return false    
   end  
-
 end
-
