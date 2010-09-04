@@ -14,7 +14,7 @@
       <% end %>
       <guid><%= "twitter2rss_#{tweet['id']}" %></guid>
       <description>
-        <![CDATA[<%= "#{avatar(tweet)}#{formatted(tweet)}" %>]]>
+        <![CDATA[<%= raw "#{avatar(tweet)}#{formatted(tweet)}" %>]]>
       </description>
       <pubDate><%= pub_date(tweet) %></pubDate>
     </item>
