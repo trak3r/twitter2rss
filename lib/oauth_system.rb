@@ -83,37 +83,10 @@ protected
 
 	# controller wrappers for twitter API methods
 
-	# Twitter REST API Method: statuses/update
-	def update_status!(  status , in_reply_to_status_id = nil )
-		self.twitagent.update_status!(  status , in_reply_to_status_id )
-	rescue => err
-		# The user might have rejected this application. Or there was some other error during the request.
-		RAILS_DEFAULT_LOGGER.error "#{err.message} Failed update status"
-		return
-	end
-
-	# Twitter REST API Method: statuses friends
-	def friends(user=nil)
-		self.twitagent.friends(user)
-	rescue => err
-		RAILS_DEFAULT_LOGGER.error "Failed to get friends via OAuth for #{current_user.inspect}"
-		flash[:error] = "Twitter API failure (getting friends)"
-		return
-	end
-
-	# Twitter REST API Method: statuses followers
-	def followers(user=nil)
-		self.twitagent.followers(user)
-	rescue => err
-		RAILS_DEFAULT_LOGGER.error "Failed to get followers via OAuth for #{current_user.inspect}"
-		flash[:error] = "Twitter API failure (getting followers)"
-		return
-	end
-
 	# Twitter REST API Method: statuses mentions
 	def mentions( since_id = nil, max_id = nil , count = nil, page = nil )
 		self.twitagent.mentions( since_id, max_id, count, page )
-	rescue => err
+#	rescue => err
 		RAILS_DEFAULT_LOGGER.error "Failed to get mentions via OAuth for #{current_user.inspect}"
 		flash[:error] = "Twitter API failure (getting mentions)"
 		return

@@ -1,6 +1,9 @@
 class TimelineController < ApplicationController
+  include OauthSystem
+
   def index
-    @member = Member.find_by_token(params[:token])
-    @tweets = []
+    current_user = Member.find_by_token(params[:token])
+    @tweets = mentions
+    raise @tweets.inspect
   end
 end
