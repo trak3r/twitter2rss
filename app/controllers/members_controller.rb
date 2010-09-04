@@ -1,3 +1,6 @@
+# 
+#  code mostly copied from http://github.com/tardate/rails-twitter-oauth-sample
+# 
 class MembersController < ApplicationController
   # include the oauth_system mixin
   include OauthSystem

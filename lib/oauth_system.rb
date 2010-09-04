@@ -1,3 +1,6 @@
+# 
+#  code mostly copied from http://github.com/tardate/rails-twitter-oauth-sample
+# 
 require 'json'
 require 'oauth'
 
