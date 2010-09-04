@@ -6,6 +6,10 @@ class MembersController < ApplicationController
   before_filter :init_member, :except => [ :callback, :signout, :index ]
   before_filter :access_check, :except => [ :callback, :signout, :index ]
 
+  def timeline
+    render :text => 'Your timeline'
+  end
+
   # controller method to handle twitter callback (expected after login_by_oauth invoked)
   def callback
       self.twitagent.exchange_request_for_access_token( session[:request_token], session[:request_token_secret], params[:oauth_verifier] )
@@ -45,10 +49,10 @@ class MembersController < ApplicationController
   # GET /members
   # GET /members.xml
   def index
-    if current_user
-      @path = member_path(current_user)
+    @redirect_path = if current_user
+      member_path(current_user)
     else
-      @path = new_member_path
+      new_member_path
     end
   end
 
@@ -61,6 +65,7 @@ class MembersController < ApplicationController
   # GET /members/1
   # GET /members/1.xml
   def show
+    @timeline_url = timeline_url(current_user.token, :format => 'rss')
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @member }
