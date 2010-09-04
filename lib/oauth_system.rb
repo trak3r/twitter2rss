@@ -1,14 +1,13 @@
 # 
 #  code mostly copied from http://github.com/tardate/rails-twitter-oauth-sample
 # 
-require 'json'
-require 'oauth'
-
 module OauthSystem
   class GeneralError < StandardError
   end
+  
   class RequestError < OauthSystem::GeneralError
   end
+  
   class NotInitializedError < OauthSystem::GeneralError
   end
 
@@ -19,31 +18,32 @@ module OauthSystem
     redirect_to root_url
   end
   
-protected
+  protected
   
-    # Inclusion hook to make #current_user, #logged_in? available as ActionView helper methods.
-    def self.included(base)
+  # Inclusion hook to make #current_user, #logged_in? available as ActionView helper methods.
+  def self.included(base)
     base.send :helper_method, :current_user, :logged_in? if base.respond_to? :helper_method
-    end
+  end
 
 
-    def twitagent( user_token = nil, user_secret = nil )
+  def twitagent( user_token = nil, user_secret = nil )
     self.twitagent = TwitterOauth.new( user_token, user_secret )  if user_token && user_secret
     self.twitagent = TwitterOauth.new( ) unless @twitagent
     @twitagent ||= raise OauthSystem::NotInitializedError
-    end
-    def twitagent=(new_agent)
+  end
+
+  def twitagent=(new_agent)
     @twitagent = new_agent || false
-    end
-  
-    # Accesses the current user from the session.
-    # Future calls avoid the database because nil is not equal to false.
-    def current_user
+  end
+
+  # Accesses the current user from the session.
+  # Future calls avoid the database because nil is not equal to false.
+  def current_user
     @current_user ||= (login_from_session) unless @current_user == false
-    end
-  
-    # Sets the current_user, including initializing the OAuth agent
-    def current_user=(new_user)
+  end
+
+  # Sets the current_user, including initializing the OAuth agent
+  def current_user=(new_user)
     if new_user
       session[:twitter_id] = new_user.twitter_id
       self.twitagent( user_token = new_user.token, user_secret = new_user.secret )
@@ -53,7 +53,7 @@ protected
       self.twitagent = false
       @current_user = false
     end
-    end
+  end
 
   def oauth_login_required
     logged_in? || login_by_oauth
@@ -82,8 +82,6 @@ protected
     redirect_to root_url
   end
 
-  
-
   # controller wrappers for twitter API methods
 
   # Twitter REST API Method: statuses mentions
@@ -103,6 +101,4 @@ protected
     flash[:error] = "Twitter API failure (getting direct_messages)"
     return
   end
-
-  
 end

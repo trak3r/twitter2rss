@@ -1,26 +1,24 @@
 # 
 #  code mostly copied from http://github.com/tardate/rails-twitter-oauth-sample
 # 
-require 'json'
-require 'oauth'
-
 class TwitterOauth
-
   class GeneralError < StandardError
   end
+
   class APIError < TwitterOauth::GeneralError
   end
+
   class UnexpectedResponse < TwitterOauth::APIError
   end  
+
   class APILimitWarning < TwitterOauth::APIError
   end
-  
 
   # initialize the oauth consumer, and also access token if user_token and user_secret provided
-    def initialize( user_token = nil, user_secret = nil )
+  def initialize( user_token = nil, user_secret = nil )
     @consumer = OAuth::Consumer.new(TWOAUTH_KEY, TWOAUTH_SECRET, { :site=> TWOAUTH_SITE  })
     @access_token = OAuth::AccessToken.new( @consumer, user_token, user_secret ) if user_token && user_secret
-    end  
+  end  
   
   # returns the consumer
   def consumer
@@ -28,12 +26,13 @@ class TwitterOauth
   end
   
   # returns the access token, also initializes new access token if user_token and user_secret provided
-    def access_token( user_token = nil, user_secret = nil )
+  def access_token( user_token = nil, user_secret = nil )
     ( user_token && user_secret ) ? @access_token = OAuth::AccessToken.new( self.consumer, user_token, user_secret ) : @access_token
-    end
-    def access_token=(new_access_token)
+  end
+  
+  def access_token=(new_access_token)
     @access_token = new_access_token || false
-    end
+  end
 
 
   # when the callback has been received, exchange the request token for an access token
@@ -51,7 +50,6 @@ class TwitterOauth
   def get_request_token( oauth_callback = TWOAUTH_CALLBACK )
     self.consumer.get_request_token( :oauth_callback => oauth_callback )
   end
-
   
   # twitter API methods
   
