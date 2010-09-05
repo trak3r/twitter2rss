@@ -6,10 +6,23 @@ module TimelineHelper
   end
   
   def suffix(tweet)
+    return " (retweeted by #{tweet['user']['screen_name']})" if retweeted?(tweet)
     return " (@reply)" if reply?(tweet)
     return " (direct message)" if direct_message?(tweet)
     return " (search result reference)" if reference?(tweet)
     return ""
+  end
+  
+  def id(tweet)
+    begin
+      tweet['retweeted_status']['id']
+    rescue
+      tweet['id']
+    end
+  end
+  
+  def retweeted?(tweet)
+    !!tweet['retweeted_status']
   end
 
   def reply?(tweet)
@@ -23,9 +36,17 @@ module TimelineHelper
   def reference?(tweet)
     false
   end
+  
+  def text(tweet)
+    begin
+      tweet['retweeted_status']['text']
+    rescue
+      tweet['text']
+    end
+  end
 
   def formatted(tweet)
-    "<span style=\"font-size:medium\">#{auto_link_ats(auto_link(CGI::unescapeHTML(tweet['text'].gsub('&amp;','&'))))}</span>"
+    "<span style=\"font-size:medium\">#{auto_link_ats(auto_link(CGI::unescapeHTML(text(tweet).gsub('&amp;','&'))))}</span>"
   end
   
   def auto_link_ats(text)
@@ -42,15 +63,19 @@ module TimelineHelper
 
   def screen_name(tweet)
     begin
-      tweet['user']['screen_name'] # Status
+      tweet['retweeted_status']['user']['screen_name'] # Retweet
     rescue 
       begin
-        tweet['sender_screen_name'] # DirectMessage
+        tweet['user']['screen_name'] # Status
       rescue 
         begin
-          tweet['from_user'] # SearchResult
-        rescue
-          '?'
+          tweet['sender_screen_name'] # DirectMessage
+        rescue 
+          begin
+            tweet['from_user'] # SearchResult
+          rescue
+            '?'
+          end
         end
       end
     end
