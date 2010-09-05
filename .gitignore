@@ -1,3 +1,5 @@
+tmp/restart.txt
+config/initializers/twitter.rb
 *.swp
 .bundle
 db/*.sqlite3
