@@ -25,7 +25,6 @@ module OauthSystem
     base.send :helper_method, :current_user, :logged_in? if base.respond_to? :helper_method
   end
 
-
   def twitagent( user_token = nil, user_secret = nil )
     self.twitagent = TwitterOauth.new( user_token, user_secret )  if user_token && user_secret
     self.twitagent = TwitterOauth.new( ) unless @twitagent
@@ -61,13 +60,13 @@ module OauthSystem
 
     # Returns true or false if the user is logged in.
     # Preloads @current_user with the user model if they're logged in.
-    def logged_in?
+  def logged_in?
     !!current_user
-    end
+  end
 
-    def login_from_session
+  def login_from_session
     self.current_user = Member.find_by_twitter_id(session[:twitter_id]) if session[:twitter_id]
-    end
+  end
 
   def login_by_oauth
     request_token = self.twitagent.get_request_token
@@ -75,11 +74,11 @@ module OauthSystem
     session[:request_token_secret] = request_token.secret
     # Send to twitter.com to authorize
     redirect_to request_token.authorize_url
-  rescue
-    # The user might have rejected this application. Or there was some other error during the request.
-    RAILS_DEFAULT_LOGGER.error "Failed to login via OAuth"
-    flash[:error] = "Twitter API failure (account login)"
-    redirect_to root_url
+  # rescue
+  #   # The user might have rejected this application. Or there was some other error during the request.
+  #   RAILS_DEFAULT_LOGGER.error "Failed to login via OAuth"
+  #   flash[:error] = "Twitter API failure (account login)"
+  #   redirect_to root_url
   end
 
   # controller wrappers for twitter API methods
@@ -87,34 +86,34 @@ module OauthSystem
   # Twitter REST API Method: statuses mentions
   def mentions( since_id = nil, max_id = nil , count = nil, page = nil )
     self.twitagent.mentions( since_id, max_id, count, page )
-  rescue => err
-    RAILS_DEFAULT_LOGGER.error "Failed to get mentions via OAuth for #{current_user.inspect}"
-    flash[:error] = "Twitter API failure (getting mentions)"
-    return
+  # rescue => err
+  #   RAILS_DEFAULT_LOGGER.error "Failed to get mentions via OAuth for #{current_user.inspect}"
+  #   flash[:error] = "Twitter API failure (getting mentions)"
+  #   return
   end
 
   # Twitter REST API Method: direct_messages
   def direct_messages( since_id = nil, max_id = nil , count = nil, page = nil )
     self.twitagent.direct_messages( since_id, max_id, count, page )
-  rescue => err
-    RAILS_DEFAULT_LOGGER.error "Failed to get direct_messages via OAuth for #{current_user.inspect}"
-    flash[:error] = "Twitter API failure (getting direct_messages)"
-    return
+  # rescue => err
+  #   RAILS_DEFAULT_LOGGER.error "Failed to get direct_messages via OAuth for #{current_user.inspect}"
+  #   flash[:error] = "Twitter API failure (getting direct_messages)"
+  #   return
   end
 
   def friends_timeline( since_id = nil, max_id = nil , count = nil, page = nil )
     self.twitagent.friends_timeline( since_id, max_id, count, page )
-  rescue => err
-    RAILS_DEFAULT_LOGGER.error "Failed to get friends_timeline via OAuth for #{current_user.inspect}"
-    flash[:error] = "Twitter API failure (getting friends_timeline)"
-    return
+  # rescue => err
+  #   RAILS_DEFAULT_LOGGER.error "Failed to get friends_timeline via OAuth for #{current_user.inspect}"
+  #   flash[:error] = "Twitter API failure (getting friends_timeline)"
+  #   return
   end
 
   def retweeted_to_me( since_id = nil, max_id = nil , count = nil, page = nil )
     self.twitagent.retweeted_to_me( since_id, max_id, count, page )
-  rescue => err
-    RAILS_DEFAULT_LOGGER.error "Failed to get retweeted_to_me via OAuth for #{current_user.inspect}"
-    flash[:error] = "Twitter API failure (getting retweeted_to_me)"
-    return
+  # rescue => err
+  #   RAILS_DEFAULT_LOGGER.error "Failed to get retweeted_to_me via OAuth for #{current_user.inspect}"
+  #   flash[:error] = "Twitter API failure (getting retweeted_to_me)"
+  #   return
   end
 end
