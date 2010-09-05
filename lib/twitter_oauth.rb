@@ -94,18 +94,18 @@ class TwitterOauth
   end
 
   def direct_messages(since_id = nil, max_id = nil, count = nil, page = nil)
-    results_from('direct_message', since_id, max_id, count, page)
+    results_from('direct_messages', since_id, max_id, count, page)
   end
 
   def mentions(since_id = nil, max_id = nil, count = nil, page = nil)
-    results_from('mentions', since_id, max_id, count, page)
+    results_from('statuses/mentions', since_id, max_id, count, page)
   end
 
   def friends_timeline(since_id = nil, max_id = nil, count = nil, page = nil)
-    results_from('friends_timeline', since_id, max_id, count, page)
+    results_from('statuses/friends_timeline', since_id, max_id, count, page)
   end
 
   def retweeted_to_me(since_id = nil, max_id = nil, count = nil, page = nil)
-    results_from('retweeted_to_me', since_id, max_id, count, page)
+    results_from('statuses/retweeted_to_me', since_id, max_id, count, page)
   end
 end
