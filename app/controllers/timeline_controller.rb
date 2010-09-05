@@ -25,5 +25,10 @@ class TimelineController < ApplicationController
     @tweets.sort! do |a, b|
       Date.parse(a['created_at']) <=> Date.parse(b['created_at'])
     end
+
+    respond_to do |format|
+      format.rss # fall through to view
+      format.json { render :json => @tweets }
+    end
   end
 end
