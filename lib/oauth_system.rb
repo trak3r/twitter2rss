@@ -109,4 +109,12 @@ module OauthSystem
     flash[:error] = "Twitter API failure (getting friends_timeline)"
     return
   end
+
+  def retweeted_to_me( since_id = nil, max_id = nil , count = nil, page = nil )
+    self.twitagent.retweeted_to_me( since_id, max_id, count, page )
+  rescue => err
+    RAILS_DEFAULT_LOGGER.error "Failed to get retweeted_to_me via OAuth for #{current_user.inspect}"
+    flash[:error] = "Twitter API failure (getting retweeted_to_me)"
+    return
+  end
 end

@@ -6,15 +6,19 @@ class TimelineController < ApplicationController
 
     @tweets = []
 
-    friends_timeline(nil, nil, 55).each do |tweet|
+    (friends_timeline(nil, nil, 55) || []).each do |tweet|
       @tweets << tweet
     end
 
-    mentions.each do |mention|
+    (retweeted_to_me || []).each do |tweet|
+      @tweets << tweet
+    end
+
+    (mentions || []).each do |mention|
       @tweets << mention
     end
 
-    direct_messages.each do |direct_message|
+    (direct_messages || []).each do |direct_message|
       @tweets << direct_message
     end
     
