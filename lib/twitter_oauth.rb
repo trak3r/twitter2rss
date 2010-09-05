@@ -34,7 +34,6 @@ class TwitterOauth
     @access_token = new_access_token || false
   end
 
-
   # when the callback has been received, exchange the request token for an access token
   def exchange_request_for_access_token( request_token,  request_token_secret, oauth_verifier )
     #request_token = self.request_token( request_token, request_token_secret )
@@ -68,22 +67,6 @@ class TwitterOauth
     puts "Exception in verify_credentials: #{err}"
     raise err
   end
-
-  # Twitter REST API Method: account rate_limit_status
-  def rate_limit_status
-    response = access_token.get('/account/rate_limit_status.json')
-    case response
-    when Net::HTTPSuccess
-      status=JSON.parse(response.body)
-      raise TwitterOauth::UnexpectedResponse unless status.is_a? Hash
-      status
-    else
-      raise TwitterOauth::APIError
-    end
-  rescue => err
-    puts "Exception in rate_limit_status: #{err}"
-    raise err
-  end  
 
   # Twitter REST API Method: direct_messages
   def direct_messages( since_id = nil, max_id = nil , count = nil, page = nil )
