@@ -58,7 +58,15 @@ module TimelineHelper
   end
 
   def profile_image_url(tweet)
-    tweet['user']['profile_image_url'] rescue tweet['sender']['profile_image_url']
+    begin
+      tweet['retweeted_status']['user']['profile_image_url'] 
+    rescue 
+      begin
+        tweet['user']['profile_image_url'] 
+      rescue 
+        tweet['sender']['profile_image_url']
+      end
+    end
   end
 
   def screen_name(tweet)
