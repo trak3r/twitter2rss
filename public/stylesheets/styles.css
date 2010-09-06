@@ -1,0 +1,20 @@
+p {
+  font-family: Helvetica;
+  font-size: x-large;
+  width: 50%;
+}
+
+a, a:visited, a:hover {
+  text-decoration: none;
+  color: darkgreen;
+}
+
+.question {
+  color: darkblue;
+  margin-left: 1em;
+}
+
+.answer {
+  color: darkgreen;
+  margin-left: 2em;
+}
